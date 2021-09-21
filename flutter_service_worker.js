@@ -18,8 +18,8 @@ const RESOURCES = {
 "assets/packages/font_awesome_flutter/lib/fonts/fa-solid-900.ttf": "ffed6899ceb84c60a1efa51c809a57e4",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf": "3241d1d9c15448a4da96df05f3292ffe",
 "version.json": "a0e96745c7a1d8e4b7449e4bd0436e23",
-"index.html": "15ed76ae4a61c006d1ecf7c2f2e77e82",
-"/": "15ed76ae4a61c006d1ecf7c2f2e77e82",
+"index.html": "048730becd23008af4d8bd45fbecb1b2",
+"/": "048730becd23008af4d8bd45fbecb1b2",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1"
