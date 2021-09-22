@@ -14,7 +14,7 @@ final Paint drawingPaint = Paint()
   ..strokeCap = StrokeCap.round
   ..isAntiAlias = true
   ..color = Colors.black
-  ..strokeWidth = 12.0;
+  ..strokeWidth = 18.0;
 
 void main() => runApp(MyApp());
 
@@ -62,11 +62,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Offset> digit1 = [];
   List<Offset> digit2 = [];
+  String sum = "";
   int sumOrTtt = 0;
 
   void _resetDigits() {
     digit1 = [];
     digit2 = [];
+    sum = "";
   }
 
   @override
@@ -114,7 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                               onPanStart: (details) {
-                                print("start");
                                 setState(
                                   () {
                                     RenderBox renderBox =
@@ -157,7 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                               onPanStart: (details) {
-                                print("start");
                                 setState(() {
                                   RenderBox renderBox =
                                       context.findRenderObject() as RenderBox;
@@ -165,9 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       .globalToLocal(details.globalPosition));
                                 });
                               },
-                              onPanEnd: (details) {
-                                print("end");
-                              },
+                              onPanEnd: (details) => digit2.add(Offset.zero),
                               child: ClipRect(
                                 child: CustomPaint(
                                   size: Size(canvasSize, canvasSize),
@@ -187,15 +185,46 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         width: canvasSize,
                         height: canvasSize,
+                        child: sum.isNotEmpty
+                            ? Center(
+                                child: Text(
+                                  sum,
+                                  style: TextStyle(fontSize: 80),
+                                ),
+                              )
+                            : Container(),
                       ),
                       Spacer(),
                     ],
                   ),
                   Spacer(),
-                  ElevatedButton.icon(
-                    onPressed: () => setState(() => _resetDigits()),
-                    icon: FaIcon(FontAwesomeIcons.redo),
-                    label: Text("Reset"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        label: Text("Reset"),
+                        icon: FaIcon(FontAwesomeIcons.redo),
+                        onPressed: () => setState(() => _resetDigits()),
+                      ),
+                      const SizedBox(width: 30),
+                      ElevatedButton.icon(
+                        label: Text("Calculate"),
+                        icon: FaIcon(FontAwesomeIcons.brain),
+                        onPressed: () async {
+                          if (digit1.isNotEmpty && digit2.isNotEmpty) {
+                            var res = await Future.wait([digit1, digit2]
+                                    .map((points) => convertToImg(points)))
+                                .then((imgs) => callNl(imgs));
+                            if (res.statusCode == 200) {
+                              setState(() => sum = (res.data['digit1.png'] +
+                                      res.data['digit2.png'])
+                                  .toString());
+                              print(res.data);
+                            }
+                          }
+                        },
+                      ),
+                    ],
                   ),
                   Spacer(),
                   Row(
@@ -208,12 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       InkWell(
                         child: Image(
                             image: AssetImage(Images.cclabLogo), height: 80),
-                        onTap: () async {
-                          var res = await Future.wait([digit1, digit2]
-                                  .map((points) => processCanvasPoints(points)))
-                              .then((imgs) => callNl(imgs));
-                          print(res.data);
-                        },
+                        onTap: () {},
                       ),
                       Image(
                           image: AssetImage(Images.mariSenseLogo), height: 80),
@@ -241,7 +265,13 @@ Future<Response> callNl(List<Uint8List> imgs) async {
   // print(jsonDecode(res.body));
   // print(res.body);
 
-  var dio = Dio(BaseOptions(baseUrl: 'http://0.0.0.0:8000/'));
+  var dio = Dio(
+    BaseOptions(
+      // baseUrl: 'http://0.0.0.0:8000/',
+      baseUrl: 'https://neurolog-demo-backend.herokuapp.com',
+      responseType: ResponseType.json,
+    ),
+  );
   var formData = FormData();
   formData.files.addAll([
     MapEntry(
@@ -261,10 +291,10 @@ Future<Response> callNl(List<Uint8List> imgs) async {
       ),
     ),
   ]);
-  return await dio.post("/deduce2", data: formData);
+  return await dio.post("/deduce", data: formData);
 }
 
-Future<Uint8List> processCanvasPoints(List<Offset> points) async {
+Future<Uint8List> convertToImg(List<Offset> points) async {
   final recorder = PictureRecorder();
   final canvas = Canvas(
     recorder,
