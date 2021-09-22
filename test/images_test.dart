@@ -5,9 +5,12 @@ import 'package:test/test.dart';
 
 void main() {
   test('images assets test', () {
+    expect(true, File(Images.o).existsSync());
     expect(true, File(Images.cclabLogo).existsSync());
     expect(true, File(Images.mariSenseLogo).existsSync());
+    expect(true, File(Images.empty).existsSync());
     expect(true, File(Images.oucLogo).existsSync());
     expect(true, File(Images.brainNetwork).existsSync());
+    expect(true, File(Images.x).existsSync());
   });
 }
