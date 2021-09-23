@@ -144,24 +144,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Text(
                             'NeuroLog',
-                            style: GoogleFonts.vt323(
-                              textStyle: TextStyle(
-                                color: Colors.blue,
-                                fontFeatures: [FontFeature.enable('smcp')],
-                                letterSpacing: .5,
-                                fontSize: 80,
-                              ),
+                            style: TextStyle(
+                              fontSize: 80,
+                              color: Colors.blue,
+                              fontFeatures: [FontFeature.enable('smcp')],
+                              letterSpacing: .5,
                             ),
                           ),
                           Text(
                             "A Neural-Symbolic System",
-                            style: GoogleFonts.vt323(
-                              textStyle: TextStyle(
-                                // color: Colors.blue,
-                                letterSpacing: .5,
-                                fontSize: 30,
-                              ),
-                            ),
+                            style: TextStyle(fontSize: 30),
                           ),
                           Image(
                             image: AssetImage(Images.brainNetwork),
@@ -204,8 +196,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 2.0, color: Colors.blue),
+                              border: Border.all(
+                                width: 2.0,
+                                color: Colors.blue,
+                              ),
                             ),
                             child: Builder(
                               builder: (BuildContext context) {
@@ -307,8 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 2.0, color: Colors.blue),
+                              border: Border.all(
+                                width: 2.0,
+                                color: Colors.blue,
+                              ),
                             ),
                             width: canvasSize,
                             height: canvasSize,
@@ -316,12 +312,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ? Center(
                                     child: Text(
                                       sum,
-                                      style: GoogleFonts.vt323(
-                                        textStyle: TextStyle(
-                                          letterSpacing: .5,
-                                          fontSize: 100,
-                                        ),
-                                      ),
+                                      style: TextStyle(fontSize: 100),
                                     ),
                                   )
                                 : Container(),
@@ -355,12 +346,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: [
                                       Text(
                                         "How did the system do?",
-                                        style: GoogleFonts.vt323(
-                                          textStyle: TextStyle(
-                                            letterSpacing: .5,
-                                            fontSize: 20,
-                                          ),
-                                        ),
+                                        style: TextStyle(fontSize: 20),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -408,12 +394,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Text(
                                           "Help the system learn by providing "
                                           "the correct answer!",
-                                          style: GoogleFonts.vt323(
-                                            textStyle: TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 20,
-                                            ),
-                                          ),
+                                          style: TextStyle(fontSize: 20),
                                         ),
                                         SizedBox(height: 10),
                                         TextField(
@@ -430,25 +411,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 ? "Must be a value between 0-18!"
                                                 : null,
                                             border: OutlineInputBorder(),
-                                            helperStyle: GoogleFonts.vt323(
-                                              textStyle: TextStyle(
-                                                letterSpacing: .5,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            errorStyle: GoogleFonts.vt323(
-                                              textStyle: TextStyle(
-                                                letterSpacing: .5,
-                                                fontSize: 12,
-                                              ),
-                                            ),
+                                            helperStyle:
+                                                TextStyle(fontSize: 12),
+                                            errorStyle: TextStyle(fontSize: 12),
                                           ),
-                                          style: GoogleFonts.vt323(
-                                            textStyle: TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 20,
-                                            ),
-                                          ),
+                                          style: TextStyle(fontSize: 20),
                                         ),
                                         SizedBox(height: 10),
                                         Row(
@@ -460,12 +427,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   setState(() => _resetAll()),
                                               child: Text(
                                                 "CANCEL & RETRY",
-                                                style: GoogleFonts.vt323(
-                                                  textStyle: TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
+                                                style: TextStyle(fontSize: 15),
                                               ),
                                             ),
                                             SizedBox(width: 10),
@@ -474,11 +436,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 setState(() {
                                                   var text =
                                                       _textController.text;
+
                                                   if (text.isNotEmpty) {
                                                     var intVal =
                                                         int.tryParse(text) ??
                                                             -1;
-                                                    print("INTVAL $intVal");
 
                                                     if (0 <= intVal &&
                                                         intVal <= 18) {
@@ -487,7 +449,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       text = "";
                                                     }
                                                   }
-                                                  print("TEXT $text");
+
                                                   if (text.isNotEmpty) {
                                                     _textController.clear();
                                                     _feedbackGiven = true;
@@ -498,12 +460,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               },
                                               child: Text(
                                                 "SUBMIT",
-                                                style: GoogleFonts.vt323(
-                                                  textStyle: TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
+                                                style: TextStyle(fontSize: 15),
                                               ),
                                             ),
                                           ],
@@ -518,12 +475,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     "Thanks for the feedback!\n\nYour response "
                                     "will be used to re-train and improve the "
                                     "system.",
-                                    style: GoogleFonts.vt323(
-                                      textStyle: TextStyle(
-                                        letterSpacing: .5,
-                                        fontSize: 15,
-                                      ),
-                                    ),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                         ),
@@ -537,16 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                        label: Text(
-                          "RESET",
-                          style: GoogleFonts.vt323(
-                            textStyle: TextStyle(
-                              // color: Colors.blue,
-                              letterSpacing: .5,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
+                        label: Text("RESET", style: TextStyle(fontSize: 25)),
                         icon: FaIcon(FontAwesomeIcons.redo),
                         onPressed: () => setState(() => _resetAll()),
                       ),
@@ -556,16 +499,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? "Calculate answer!"
                             : "Please write numbers first!",
                         child: ElevatedButton.icon(
-                          label: Text(
-                            "CALCULATE",
-                            style: GoogleFonts.vt323(
-                              textStyle: TextStyle(
-                                // color: Colors.blue,
-                                letterSpacing: .5,
-                                fontSize: 25,
-                              ),
-                            ),
-                          ),
+                          label:
+                              Text("CALCULATE", style: TextStyle(fontSize: 25)),
                           icon: FaIcon(FontAwesomeIcons.brain),
                           onPressed: _bothDigitsFilled()
                               ? () async {
