@@ -1,5 +1,7 @@
 # NeuroLog: A Neural-Symbolic System
 
+Live demo: https://msthoma.github.io/neurolog_flutter_demo/
+
 NeuroLog is a neural-symbolic system, based on the paper by Tsamoura & Michael (2020),
 [_Neural-Symbolic Integration: A Compositional Perspective_](https://arxiv.org/abs/2010.11926), and 
 builds upon the [original implementation](https://bitbucket.org/tsamoura/neurolog/src/master/)
