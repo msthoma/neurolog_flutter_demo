@@ -65,18 +65,18 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Offset> digit2 = [];
   String sum = "";
   int sumOrTtt = 0;
+  bool _feedbackGiven = false;
 
-  void _resetDigits() {
+  void _resetAll() {
     digit1 = [];
     digit2 = [];
     sum = "";
+    _feedbackGiven = false;
   }
 
   bool _bothDigitsFilled() => digit1.isNotEmpty && digit2.isNotEmpty;
 
   bool _sumCalculated() => sum.isNotEmpty;
-
-  bool _feedbackGiven() => false;
 
   @override
   Widget build(BuildContext context) {
@@ -221,41 +221,65 @@ class _MyHomePageState extends State<MyHomePage> {
                             : Container(),
                       ),
                       const SizedBox(width: 20),
-                      AnimatedOpacity(
-                        opacity: _sumCalculated() ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 100),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "How did the system do?",
-                              style: GoogleFonts.vt323(
-                                textStyle: TextStyle(
-                                  letterSpacing: .5,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.check,
-                                    color: Colors.green,
+                      SizedBox(
+                        height: 200.0,
+                        width: 200.0,
+                        child: AnimatedOpacity(
+                          opacity: _sumCalculated() ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 100),
+                          child: !_feedbackGiven
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "How did the system do?",
+                                      style: GoogleFonts.vt323(
+                                        textStyle: TextStyle(
+                                          letterSpacing: .5,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.check,
+                                            color: Colors.green,
+                                          ),
+                                          onPressed: _sumCalculated()
+                                              ? () {
+                                                  setState(() =>
+                                                      _feedbackGiven = true);
+                                                }
+                                              : null,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        IconButton(
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.times,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed:
+                                              _sumCalculated() ? () {} : null,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : Center(
+                                  child: Text(
+                                    "Thanks for the feedback!",
+                                    style: GoogleFonts.vt323(
+                                      textStyle: TextStyle(
+                                        letterSpacing: .5,
+                                        fontSize: 15,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: _sumCalculated() ? () {} : null,
                                 ),
-                                const SizedBox(height: 20),
-                                IconButton(
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.times,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: _sumCalculated() ? () {} : null,
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
                       ),
                       Spacer(),
@@ -277,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         icon: FaIcon(FontAwesomeIcons.redo),
-                        onPressed: () => setState(() => _resetDigits()),
+                        onPressed: () => setState(() => _resetAll()),
                       ),
                       const SizedBox(width: 30),
                       Tooltip(
