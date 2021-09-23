@@ -4,11 +4,20 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:neurolog_flutter_demo/resources/resources.dart';
 import 'package:neurolog_flutter_demo/tic_tac_toe.dart';
+
+const String _instructions = """
+- First
+- Second
+
+1. dfs
+2. 454354
+""";
 
 const double canvasSize = 200.0;
 
@@ -45,7 +54,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'NeuroLog: A Neural-Symbolic System',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.vt323TextTheme(Theme.of(context).textTheme),
+      ),
       home: MyHomePage(title: 'NeuroLog'),
       // home: MyHomePage(),
     );
@@ -134,6 +146,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
+                  Spacer(),
+                  Container(
+                      height: 200,
+                      width: 600,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2.0, color: Colors.blue),
+                      ),
+                      child: Markdown(data: _instructions)),
                   Spacer(),
                   Row(
                     children: [
