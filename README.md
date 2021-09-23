@@ -1,16 +1,13 @@
-# neurolog_flutter_demo
+# NeuroLog: A Neural-Symbolic System
 
-A new Flutter project.
+NeuroLog is a neural-symbolic system, based on the paper by Tsamoura & Michael (2020),
+[_Neural-Symbolic Integration: A Compositional Perspective_](https://arxiv.org/abs/2010.11926), and 
+is a continuation of the [original implementation](https://bitbucket.org/tsamoura/neurolog/src/master/)
+of the system.
 
-## Getting Started
+This demo, created with Dart/Flutter, shows a simple demonstration of how the system operates after 
+an initial training period. It allows users to interact with the system, and by asking their 
+feedback, the system is able to improve over time by retraining its underlying neural network.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Created by the [Computational Cognition Lab](https://cognition.ouc.ac.cy/cclab/) at the Open 
+University of Cyprus. 
