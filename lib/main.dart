@@ -142,22 +142,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'NeuroLog',
-                            style: TextStyle(
-                              fontSize: 80,
-                              color: Colors.blue,
-                              fontFeatures: [FontFeature.enable('smcp')],
-                              letterSpacing: .5,
-                            ),
+                          Row(
+                            children: [
+                              Image(
+                                image: AssetImage(Images.aiBrain),
+                                height: 60,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'NeuroLog',
+                                style: TextStyle(
+                                  fontSize: 80,
+                                  color: Colors.blue,
+                                  fontFeatures: [FontFeature.enable('smcp')],
+                                  letterSpacing: .5,
+                                ),
+                              ),
+                            ],
                           ),
                           Text(
                             "A Neural-Symbolic System",
                             style: TextStyle(fontSize: 30),
-                          ),
-                          Image(
-                            image: AssetImage(Images.brainNetwork),
-                            height: 60,
                           ),
                         ],
                       ),

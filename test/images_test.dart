@@ -10,7 +10,7 @@ void main() {
     expect(true, File(Images.mariSenseLogo).existsSync());
     expect(true, File(Images.empty).existsSync());
     expect(true, File(Images.oucLogo).existsSync());
-    expect(true, File(Images.brainNetwork).existsSync());
+    expect(true, File(Images.aiBrain).existsSync());
     expect(true, File(Images.x).existsSync());
   });
 }

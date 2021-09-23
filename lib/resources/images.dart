@@ -8,6 +8,6 @@ class Images {
   static const String mariSenseLogo = 'assets/images/mari_sense_logo.webp';
   static const String empty = 'assets/images/empty.png';
   static const String oucLogo = 'assets/images/ouc_logo.webp';
-  static const String brainNetwork = 'assets/images/brain_network.webp';
+  static const String aiBrain = 'assets/images/ai_brain.webp';
   static const String x = 'assets/images/x.png';
 }
