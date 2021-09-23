@@ -12,11 +12,16 @@ import 'package:neurolog_flutter_demo/resources/resources.dart';
 import 'package:neurolog_flutter_demo/tic_tac_toe.dart';
 
 const String _instructions = """
-- First
-- Second
+# Instructions
 
-1. dfs
-2. 454354
+- Using your mouse or other input device, input two digits in the first two 
+boxes.
+- Click **CALCULATE**. The system will analyse your input, recognise the digits, 
+and display their sum in the third box.
+- You can then provide feedback on whether the system was correct or not.
+- All feedback is used to improve the system in REAL-TIME.
+
+## Thanks for using and helping to improve NeuroLog!
 """;
 
 const double canvasSize = 200.0;
@@ -114,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Spacer(),
                   // Image(image: AssetImage(Images.brainNetwork), height: 100),
                   // Text(
                   //   'NeuroLog',
@@ -125,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   //     letterSpacing: .5,
                   //   ),
                   // ),
+                  SizedBox(height: 20),
                   Text(
                     'NeuroLog',
                     style: GoogleFonts.vt323(
@@ -148,13 +153,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Spacer(),
                   Container(
-                      height: 200,
-                      width: 600,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2.0, color: Colors.blue),
-                      ),
-                      child: Markdown(data: _instructions)),
-                  Spacer(),
+                    height: 200,
+                    width: 1000,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(width: 2.0, color: Colors.blue),
+                    // ),
+                    child: Markdown(
+                      data: _instructions,
+                      styleSheet: MarkdownStyleSheet.fromTheme(
+                        Theme.of(context),
+                      ).copyWith(p: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Spacer(),
@@ -523,15 +534,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       InkWell(
                           child: Image(
-                              image: AssetImage(Images.oucLogo), height: 80),
+                              image: AssetImage(Images.oucLogo), height: 60),
                           onTap: () => print("tap")),
                       InkWell(
                         child: Image(
-                            image: AssetImage(Images.cclabLogo), height: 80),
+                            image: AssetImage(Images.cclabLogo), height: 60),
                         onTap: () {},
                       ),
                       Image(
-                          image: AssetImage(Images.mariSenseLogo), height: 80),
+                          image: AssetImage(Images.mariSenseLogo), height: 60),
                       // TODO add url links when clicking images
                       //  TODO add link to github repo, build with Flutter
                     ],
