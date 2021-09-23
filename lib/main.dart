@@ -185,7 +185,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           selectable: true,
                           styleSheet: MarkdownStyleSheet.fromTheme(
                             Theme.of(context),
-                          ).copyWith(p: TextStyle(fontSize: 20)),
+                          ).copyWith(
+                            p: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -293,7 +295,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             ),
                           ),
-                          Text("...and second digit here.")
+                          Text("...and second digit here...")
                         ],
                       ),
                       Spacer(),
@@ -322,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   )
                                 : Container(),
                           ),
-                          Text("Predicted sum.")
+                          Text("...the system will predict their sum.")
                         ],
                       ),
                       Spacer(),
