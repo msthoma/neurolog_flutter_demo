@@ -24,8 +24,6 @@ and display their sum in the third box.
 ## Thanks for using and helping to improve NeuroLog!
 """;
 
-const double canvasSize = 200.0;
-
 final Paint drawingPaint = Paint()
   ..strokeCap = StrokeCap.round
   ..isAntiAlias = true
@@ -112,440 +110,512 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var mainColumnWidth = size.width * (8 / 10);
+    var instructionsBoxHeight = size.height * (1 / 3.5);
+    print(mainColumnWidth / 7);
+    print(size.height / 4);
+    var canvasSize = mainColumnWidth / 6;
+    var plusEqualsSymbolsSize = mainColumnWidth / 12;
+
     return Scaffold(
       // appBar: AppBar(title: Text(widget.title)),
       body: sumOrTtt == 0
           ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // Image(image: AssetImage(Images.brainNetwork), height: 100),
-                  // Text(
-                  //   'NeuroLog',
-                  //   style: TextStyle(
-                  //     fontFeatures: [FontFeature.enable('smcp')],
-                  //     color: Colors.blue,
-                  //     fontSize: 60,
-                  //     letterSpacing: .5,
-                  //   ),
-                  // ),
-                  SizedBox(height: 20),
-                  Text(
-                    'NeuroLog',
-                    style: GoogleFonts.vt323(
-                      textStyle: TextStyle(
-                        color: Colors.blue,
-                        fontFeatures: [FontFeature.enable('smcp')],
-                        letterSpacing: .5,
-                        fontSize: 80,
-                      ),
-                    ),
+              child: Row(
+                children: [
+                  // empty space on the left
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
                   ),
-                  Text(
-                    "A Neural-Symbolic System",
-                    style: GoogleFonts.vt323(
-                      textStyle: TextStyle(
-                        // color: Colors.blue,
-                        letterSpacing: .5,
-                        fontSize: 30,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 200,
-                    width: 1000,
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(width: 2.0, color: Colors.blue),
-                    // ),
-                    child: Markdown(
-                      data: _instructions,
-                      styleSheet: MarkdownStyleSheet.fromTheme(
-                        Theme.of(context),
-                      ).copyWith(p: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Spacer(),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 2.0, color: Colors.blue),
-                        ),
-                        child: Builder(
-                          builder: (BuildContext context) {
-                            return GestureDetector(
-                              onPanUpdate: (details) {
-                                setState(
-                                  () {
-                                    RenderBox renderBox =
-                                        context.findRenderObject() as RenderBox;
-                                    digit1.add(renderBox
-                                        .globalToLocal(details.globalPosition));
-                                  },
-                                );
-                              },
-                              onPanStart: (details) {
-                                setState(
-                                  () {
-                                    RenderBox renderBox =
-                                        context.findRenderObject() as RenderBox;
-                                    digit1.add(renderBox
-                                        .globalToLocal(details.globalPosition));
-                                  },
-                                );
-                              },
-                              // mark end with Offset.zero
-                              onPanEnd: (details) => digit1.add(Offset.zero),
-                              child: ClipRect(
-                                child: CustomPaint(
-                                  size: Size(canvasSize, canvasSize),
-                                  painter: DrawingPainter(offsetPoints: digit1),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                      FaIcon(FontAwesomeIcons.plus, size: size.width / 15),
-                      const SizedBox(width: 30),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 2.0, color: Colors.blue),
-                        ),
-                        child: Builder(
-                          builder: (BuildContext context) {
-                            return GestureDetector(
-                              onPanUpdate: (details) {
-                                setState(
-                                  () {
-                                    RenderBox renderBox =
-                                        context.findRenderObject() as RenderBox;
-                                    digit2.add(renderBox
-                                        .globalToLocal(details.globalPosition));
-                                  },
-                                );
-                              },
-                              onPanStart: (details) {
-                                setState(() {
-                                  RenderBox renderBox =
-                                      context.findRenderObject() as RenderBox;
-                                  digit2.add(renderBox
-                                      .globalToLocal(details.globalPosition));
-                                });
-                              },
-                              onPanEnd: (details) => digit2.add(Offset.zero),
-                              child: ClipRect(
-                                child: CustomPaint(
-                                  size: Size(canvasSize, canvasSize),
-                                  painter: DrawingPainter(offsetPoints: digit2),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                      FaIcon(FontAwesomeIcons.equals, size: size.width / 15),
-                      const SizedBox(width: 30),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 2.0, color: Colors.blue),
-                        ),
-                        width: canvasSize,
-                        height: canvasSize,
-                        child: sum.isNotEmpty
-                            ? Center(
-                                child: Text(
-                                  sum,
+                  // main column
+                  Expanded(
+                    flex: 8,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(),
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Spacer(),
+                            // column with title
+                            Column(
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'NeuroLog',
                                   style: GoogleFonts.vt323(
                                     textStyle: TextStyle(
+                                      color: Colors.blue,
+                                      fontFeatures: [
+                                        FontFeature.enable('smcp')
+                                      ],
                                       letterSpacing: .5,
-                                      fontSize: 100,
+                                      fontSize: 80,
                                     ),
                                   ),
                                 ),
-                              )
-                            : Container(),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        height: 200.0,
-                        width: 200.0,
-                        child: AnimatedCrossFade(
-                          duration: const Duration(milliseconds: 200),
-                          crossFadeState: _sumCalculated()
-                              ? CrossFadeState.showSecond
-                              : CrossFadeState.showFirst,
-                          firstChild: SizedBox(
-                            // empty box
-                            height: 200.0,
-                            width: 200.0,
-                          ),
-                          secondChild: !_feedbackGiven
-                              ? AnimatedCrossFade(
-                                  duration: const Duration(milliseconds: 200),
-                                  crossFadeState: !_negativeFeedbackGiven
-                                      ? CrossFadeState.showFirst
-                                      : CrossFadeState.showSecond,
-                                  firstChild: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "How did the system do?",
+                                Text(
+                                  "A Neural-Symbolic System",
+                                  style: GoogleFonts.vt323(
+                                    textStyle: TextStyle(
+                                      // color: Colors.blue,
+                                      letterSpacing: .5,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                ),
+                                Image(
+                                  image: AssetImage(Images.brainNetwork),
+                                  height: 60,
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Container(
+                              // vertical divider between title & instructions
+                              height: instructionsBoxHeight * 0.9,
+                              width: 10,
+                              decoration: BoxDecoration(color: Colors.blue),
+                            ),
+                            // Spacer(),
+                            // Instructions
+                            Container(
+                              height: instructionsBoxHeight,
+                              width: mainColumnWidth * (2 / 3),
+                              // decoration: BoxDecoration(
+                              //   border: Border.all(width: 2.0, color: Colors.blue),
+                              // ),
+                              child: Markdown(
+                                data: _instructions,
+                                selectable: true,
+                                styleSheet: MarkdownStyleSheet.fromTheme(
+                                  Theme.of(context),
+                                ).copyWith(p: TextStyle(fontSize: 20)),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        ),
+                        Spacer(),
+                        Row(
+                          children: [
+                            Spacer(),
+                            Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 2.0, color: Colors.blue),
+                              ),
+                              child: Builder(
+                                builder: (BuildContext context) {
+                                  return GestureDetector(
+                                    onPanUpdate: (details) {
+                                      setState(
+                                        () {
+                                          RenderBox renderBox = context
+                                              .findRenderObject() as RenderBox;
+                                          digit1.add(renderBox.globalToLocal(
+                                              details.globalPosition));
+                                        },
+                                      );
+                                    },
+                                    onPanStart: (details) {
+                                      setState(
+                                        () {
+                                          RenderBox renderBox = context
+                                              .findRenderObject() as RenderBox;
+                                          digit1.add(renderBox.globalToLocal(
+                                              details.globalPosition));
+                                        },
+                                      );
+                                    },
+                                    // mark end with Offset.zero
+                                    onPanEnd: (details) =>
+                                        digit1.add(Offset.zero),
+                                    child: ClipRect(
+                                      child: CustomPaint(
+                                        size: Size(canvasSize, canvasSize),
+                                        painter: DrawingPainter(
+                                            offsetPoints: digit1),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Spacer(),
+                            FaIcon(FontAwesomeIcons.plus,
+                                size: plusEqualsSymbolsSize),
+                            Spacer(),
+                            Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 2.0, color: Colors.blue),
+                              ),
+                              child: Builder(
+                                builder: (BuildContext context) {
+                                  return GestureDetector(
+                                    onPanUpdate: (details) {
+                                      setState(
+                                        () {
+                                          RenderBox renderBox = context
+                                              .findRenderObject() as RenderBox;
+                                          digit2.add(renderBox.globalToLocal(
+                                              details.globalPosition));
+                                        },
+                                      );
+                                    },
+                                    onPanStart: (details) {
+                                      setState(() {
+                                        RenderBox renderBox = context
+                                            .findRenderObject() as RenderBox;
+                                        digit2.add(renderBox.globalToLocal(
+                                            details.globalPosition));
+                                      });
+                                    },
+                                    onPanEnd: (details) =>
+                                        digit2.add(Offset.zero),
+                                    child: ClipRect(
+                                      child: CustomPaint(
+                                        size: Size(canvasSize, canvasSize),
+                                        painter: DrawingPainter(
+                                            offsetPoints: digit2),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Spacer(),
+                            FaIcon(FontAwesomeIcons.equals,
+                                size: plusEqualsSymbolsSize),
+                            Spacer(),
+                            Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 2.0, color: Colors.blue),
+                              ),
+                              width: canvasSize,
+                              height: canvasSize,
+                              child: sum.isNotEmpty
+                                  ? Center(
+                                      child: Text(
+                                        sum,
                                         style: GoogleFonts.vt323(
                                           textStyle: TextStyle(
                                             letterSpacing: .5,
-                                            fontSize: 20,
+                                            fontSize: 100,
                                           ),
                                         ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.check,
-                                              color: Colors.green,
-                                            ),
-                                            onPressed: _sumCalculated()
-                                                ? () {
-                                                    setState(() =>
-                                                        _feedbackGiven = true);
-                                                  }
-                                                : null,
-                                          ),
-                                          const SizedBox(height: 20),
-                                          IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.times,
-                                              color: Colors.red,
-                                            ),
-                                            onPressed: _sumCalculated()
-                                                ? () {
-                                                    setState(() {
-                                                      _negativeFeedbackGiven =
-                                                          true;
-                                                    });
-                                                  }
-                                                : null,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  secondChild: SizedBox(
-                                    // negative feedback here
-                                    height: 200.0,
-                                    width: 200.0,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Help the system learn by providing "
-                                          "the correct answer!",
-                                          style: GoogleFonts.vt323(
-                                            textStyle: TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        TextField(
-                                          controller: _textController,
-                                          keyboardType: TextInputType.number,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9]')),
-                                          ],
-                                          decoration: InputDecoration(
-                                            helperText:
-                                                "Enter a value between 0-18.",
-                                            errorText: !_validInputSum
-                                                ? "Must be a value between 0-18!"
-                                                : null,
-                                            border: OutlineInputBorder(),
-                                            helperStyle: GoogleFonts.vt323(
-                                              textStyle: TextStyle(
-                                                letterSpacing: .5,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            errorStyle: GoogleFonts.vt323(
-                                              textStyle: TextStyle(
-                                                letterSpacing: .5,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                          style: GoogleFonts.vt323(
-                                            textStyle: TextStyle(
-                                              letterSpacing: .5,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
+                                    )
+                                  : Container(),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              height: canvasSize,
+                              width: canvasSize,
+                              child: AnimatedCrossFade(
+                                duration: const Duration(milliseconds: 200),
+                                crossFadeState: _sumCalculated()
+                                    ? CrossFadeState.showSecond
+                                    : CrossFadeState.showFirst,
+                                firstChild: SizedBox(
+                                  // empty box
+                                  height: canvasSize,
+                                  width: canvasSize,
+                                ),
+                                secondChild: !_feedbackGiven
+                                    ? AnimatedCrossFade(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        crossFadeState: !_negativeFeedbackGiven
+                                            ? CrossFadeState.showFirst
+                                            : CrossFadeState.showSecond,
+                                        firstChild: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            ElevatedButton(
-                                              onPressed: () =>
-                                                  setState(() => _resetAll()),
-                                              child: Text(
-                                                "CANCEL & RETRY",
-                                                style: GoogleFonts.vt323(
-                                                  textStyle: TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 15,
-                                                  ),
+                                            Text(
+                                              "How did the system do?",
+                                              style: GoogleFonts.vt323(
+                                                textStyle: TextStyle(
+                                                  letterSpacing: .5,
+                                                  fontSize: 20,
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 10),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  var text =
-                                                      _textController.text;
-                                                  if (text.isNotEmpty) {
-                                                    var intVal =
-                                                        int.tryParse(text) ??
-                                                            -1;
-                                                    print("INTVAL $intVal");
-
-                                                    if (0 <= intVal &&
-                                                        intVal <= 18) {
-                                                      text = intVal.toString();
-                                                    } else {
-                                                      text = "";
-                                                    }
-                                                  }
-                                                  print("TEXT $text");
-                                                  if (text.isNotEmpty) {
-                                                    _textController.clear();
-                                                    _feedbackGiven = true;
-                                                  } else {
-                                                    _validInputSum = false;
-                                                  }
-                                                });
-                                              },
-                                              child: Text(
-                                                "SUBMIT",
-                                                style: GoogleFonts.vt323(
-                                                  textStyle: TextStyle(
-                                                    letterSpacing: .5,
-                                                    fontSize: 15,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons.check,
+                                                    color: Colors.green,
                                                   ),
+                                                  onPressed: _sumCalculated()
+                                                      ? () {
+                                                          setState(() =>
+                                                              _feedbackGiven =
+                                                                  true);
+                                                        }
+                                                      : null,
                                                 ),
-                                              ),
+                                                const SizedBox(height: 20),
+                                                IconButton(
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons.times,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onPressed: _sumCalculated()
+                                                      ? () {
+                                                          setState(() {
+                                                            _negativeFeedbackGiven =
+                                                                true;
+                                                          });
+                                                        }
+                                                      : null,
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Center(
-                                  // TODO here add reset button
-                                  child: Text(
-                                    "Thanks for the feedback!\n\nYour response "
-                                    "will be used to re-train and improve the "
-                                    "system.",
-                                    style: GoogleFonts.vt323(
-                                      textStyle: TextStyle(
-                                        letterSpacing: .5,
-                                        fontSize: 15,
+                                        secondChild: SizedBox(
+                                          // negative feedback here
+                                          height: canvasSize,
+                                          width: canvasSize,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Help the system learn by providing "
+                                                "the correct answer!",
+                                                style: GoogleFonts.vt323(
+                                                  textStyle: TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 10),
+                                              TextField(
+                                                controller: _textController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(RegExp(r'[0-9]')),
+                                                ],
+                                                decoration: InputDecoration(
+                                                  helperText:
+                                                      "Enter a value between 0-18.",
+                                                  errorText: !_validInputSum
+                                                      ? "Must be a value between 0-18!"
+                                                      : null,
+                                                  border: OutlineInputBorder(),
+                                                  helperStyle:
+                                                      GoogleFonts.vt323(
+                                                    textStyle: TextStyle(
+                                                      letterSpacing: .5,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  errorStyle: GoogleFonts.vt323(
+                                                    textStyle: TextStyle(
+                                                      letterSpacing: .5,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                                style: GoogleFonts.vt323(
+                                                  textStyle: TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () => setState(
+                                                        () => _resetAll()),
+                                                    child: Text(
+                                                      "CANCEL & RETRY",
+                                                      style: GoogleFonts.vt323(
+                                                        textStyle: TextStyle(
+                                                          letterSpacing: .5,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        var text =
+                                                            _textController
+                                                                .text;
+                                                        if (text.isNotEmpty) {
+                                                          var intVal =
+                                                              int.tryParse(
+                                                                      text) ??
+                                                                  -1;
+                                                          print(
+                                                              "INTVAL $intVal");
+
+                                                          if (0 <= intVal &&
+                                                              intVal <= 18) {
+                                                            text = intVal
+                                                                .toString();
+                                                          } else {
+                                                            text = "";
+                                                          }
+                                                        }
+                                                        print("TEXT $text");
+                                                        if (text.isNotEmpty) {
+                                                          _textController
+                                                              .clear();
+                                                          _feedbackGiven = true;
+                                                        } else {
+                                                          _validInputSum =
+                                                              false;
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "SUBMIT",
+                                                      style: GoogleFonts.vt323(
+                                                        textStyle: TextStyle(
+                                                          letterSpacing: .5,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        // TODO here add reset button
+                                        child: Text(
+                                          "Thanks for the feedback!\n\nYour response "
+                                          "will be used to re-train and improve the "
+                                          "system.",
+                                          style: GoogleFonts.vt323(
+                                            textStyle: TextStyle(
+                                              letterSpacing: .5,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
                                       ),
+                              ),
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                        Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              label: Text(
+                                "RESET",
+                                style: GoogleFonts.vt323(
+                                  textStyle: TextStyle(
+                                    // color: Colors.blue,
+                                    letterSpacing: .5,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                              icon: FaIcon(FontAwesomeIcons.redo),
+                              onPressed: () => setState(() => _resetAll()),
+                            ),
+                            const SizedBox(width: 30),
+                            Tooltip(
+                              message: _bothDigitsFilled()
+                                  ? "Calculate answer!"
+                                  : "Please write numbers first!",
+                              child: ElevatedButton.icon(
+                                label: Text(
+                                  "CALCULATE",
+                                  style: GoogleFonts.vt323(
+                                    textStyle: TextStyle(
+                                      // color: Colors.blue,
+                                      letterSpacing: .5,
+                                      fontSize: 25,
                                     ),
                                   ),
                                 ),
-                        ),
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        label: Text(
-                          "RESET",
-                          style: GoogleFonts.vt323(
-                            textStyle: TextStyle(
-                              // color: Colors.blue,
-                              letterSpacing: .5,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        icon: FaIcon(FontAwesomeIcons.redo),
-                        onPressed: () => setState(() => _resetAll()),
-                      ),
-                      const SizedBox(width: 30),
-                      Tooltip(
-                        message: _bothDigitsFilled()
-                            ? "Calculate answer!"
-                            : "Please write numbers first!",
-                        child: ElevatedButton.icon(
-                          label: Text(
-                            "CALCULATE",
-                            style: GoogleFonts.vt323(
-                              textStyle: TextStyle(
-                                // color: Colors.blue,
-                                letterSpacing: .5,
-                                fontSize: 25,
+                                icon: FaIcon(FontAwesomeIcons.brain),
+                                onPressed: _bothDigitsFilled()
+                                    ? () async {
+                                        if (digit1.isNotEmpty &&
+                                            digit2.isNotEmpty) {
+                                          var res = await Future.wait([
+                                            digit1,
+                                            digit2
+                                          ].map((points) => convertToImg(
+                                                  points, canvasSize)))
+                                              .then((imgs) => callNl(imgs));
+                                          if (res.statusCode == 200) {
+                                            setState(() => sum =
+                                                (res.data['digit1.png'] +
+                                                        res.data['digit2.png'])
+                                                    .toString());
+                                            print(res.data);
+                                          }
+                                        }
+                                      }
+                                    : null, // this disables button when digits empty
                               ),
                             ),
-                          ),
-                          icon: FaIcon(FontAwesomeIcons.brain),
-                          onPressed: _bothDigitsFilled()
-                              ? () async {
-                                  if (digit1.isNotEmpty && digit2.isNotEmpty) {
-                                    var res = await Future.wait([
-                                      digit1,
-                                      digit2
-                                    ].map((points) => convertToImg(points)))
-                                        .then((imgs) => callNl(imgs));
-                                    if (res.statusCode == 200) {
-                                      setState(() => sum =
-                                          (res.data['digit1.png'] +
-                                                  res.data['digit2.png'])
-                                              .toString());
-                                      print(res.data);
-                                    }
-                                  }
-                                }
-                              : null, // this disables button when digits empty
+                          ],
                         ),
-                      ),
-                    ],
+                        Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                child: Image(
+                                    image: AssetImage(Images.oucLogo),
+                                    height: 60),
+                                onTap: () => print("tap")),
+                            InkWell(
+                              child: Image(
+                                  image: AssetImage(Images.cclabLogo),
+                                  height: 60),
+                              onTap: () {},
+                            ),
+                            Image(
+                                image: AssetImage(Images.mariSenseLogo),
+                                height: 60),
+                            SizedBox(width: 30),
+                            FaIcon(FontAwesomeIcons.github, size: 25),
+                            // TODO add url links when clicking images
+                            //  TODO add link to github repo, build with Flutter
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                          child: Image(
-                              image: AssetImage(Images.oucLogo), height: 60),
-                          onTap: () => print("tap")),
-                      InkWell(
-                        child: Image(
-                            image: AssetImage(Images.cclabLogo), height: 60),
-                        onTap: () {},
-                      ),
-                      Image(
-                          image: AssetImage(Images.mariSenseLogo), height: 60),
-                      // TODO add url links when clicking images
-                      //  TODO add link to github repo, build with Flutter
-                    ],
+                  Expanded(
+                    // empty space on the right
+                    flex: 1,
+                    child: Container(),
                   ),
                 ],
               ),
@@ -596,7 +666,7 @@ Future<Response> callNl(List<Uint8List> imgs) async {
   return await dio.post("/deduce", data: formData);
 }
 
-Future<Uint8List> convertToImg(List<Offset> points) async {
+Future<Uint8List> convertToImg(List<Offset> points, double canvasSize) async {
   final recorder = PictureRecorder();
   final canvas = Canvas(
     recorder,
