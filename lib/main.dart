@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http_parser/http_parser.dart';
@@ -66,12 +67,24 @@ class _MyHomePageState extends State<MyHomePage> {
   String sum = "";
   int sumOrTtt = 0;
   bool _feedbackGiven = false;
+  bool _negativeFeedbackGiven = false;
+
+  final _textController = TextEditingController();
+  bool _validInputSum = true;
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   void _resetAll() {
     digit1 = [];
     digit2 = [];
     sum = "";
     _feedbackGiven = false;
+    _validInputSum = true;
+    _negativeFeedbackGiven = false;
   }
 
   bool _bothDigitsFilled() => digit1.isNotEmpty && digit2.isNotEmpty;
@@ -215,7 +228,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? Center(
                                 child: Text(
                                   sum,
-                                  style: TextStyle(fontSize: 80),
+                                  style: GoogleFonts.vt323(
+                                    textStyle: TextStyle(
+                                      letterSpacing: .5,
+                                      fontSize: 100,
+                                    ),
+                                  ),
                                 ),
                               )
                             : Container(),
@@ -224,54 +242,190 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(
                         height: 200.0,
                         width: 200.0,
-                        child: AnimatedOpacity(
-                          opacity: _sumCalculated() ? 1.0 : 0.0,
-                          duration: const Duration(milliseconds: 100),
-                          child: !_feedbackGiven
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "How did the system do?",
-                                      style: GoogleFonts.vt323(
-                                        textStyle: TextStyle(
-                                          letterSpacing: .5,
-                                          fontSize: 20,
+                        child: AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 200),
+                          crossFadeState: _sumCalculated()
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                          firstChild: SizedBox(
+                            // empty box
+                            height: 200.0,
+                            width: 200.0,
+                          ),
+                          secondChild: !_feedbackGiven
+                              ? AnimatedCrossFade(
+                                  duration: const Duration(milliseconds: 200),
+                                  crossFadeState: !_negativeFeedbackGiven
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
+                                  firstChild: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "How did the system do?",
+                                        style: GoogleFonts.vt323(
+                                          textStyle: TextStyle(
+                                            letterSpacing: .5,
+                                            fontSize: 20,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Row(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.check,
+                                              color: Colors.green,
+                                            ),
+                                            onPressed: _sumCalculated()
+                                                ? () {
+                                                    setState(() =>
+                                                        _feedbackGiven = true);
+                                                  }
+                                                : null,
+                                          ),
+                                          const SizedBox(height: 20),
+                                          IconButton(
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.times,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: _sumCalculated()
+                                                ? () {
+                                                    setState(() {
+                                                      _negativeFeedbackGiven =
+                                                          true;
+                                                    });
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  secondChild: SizedBox(
+                                    // negative feedback here
+                                    height: 200.0,
+                                    width: 200.0,
+                                    child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        IconButton(
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.check,
-                                            color: Colors.green,
+                                        Text(
+                                          "Help the system learn by providing "
+                                          "the correct answer!",
+                                          style: GoogleFonts.vt323(
+                                            textStyle: TextStyle(
+                                              letterSpacing: .5,
+                                              fontSize: 20,
+                                            ),
                                           ),
-                                          onPressed: _sumCalculated()
-                                              ? () {
-                                                  setState(() =>
-                                                      _feedbackGiven = true);
-                                                }
-                                              : null,
                                         ),
-                                        const SizedBox(height: 20),
-                                        IconButton(
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.times,
-                                            color: Colors.red,
+                                        SizedBox(height: 10),
+                                        TextField(
+                                          controller: _textController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9]')),
+                                          ],
+                                          decoration: InputDecoration(
+                                            helperText:
+                                                "Enter a value between 0-18.",
+                                            errorText: !_validInputSum
+                                                ? "Must be a value between 0-18!"
+                                                : null,
+                                            border: OutlineInputBorder(),
+                                            helperStyle: GoogleFonts.vt323(
+                                              textStyle: TextStyle(
+                                                letterSpacing: .5,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            errorStyle: GoogleFonts.vt323(
+                                              textStyle: TextStyle(
+                                                letterSpacing: .5,
+                                                fontSize: 12,
+                                              ),
+                                            ),
                                           ),
-                                          onPressed:
-                                              _sumCalculated() ? () {} : null,
+                                          style: GoogleFonts.vt323(
+                                            textStyle: TextStyle(
+                                              letterSpacing: .5,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () =>
+                                                  setState(() => _resetAll()),
+                                              child: Text(
+                                                "CANCEL & RETRY",
+                                                style: GoogleFonts.vt323(
+                                                  textStyle: TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  var text =
+                                                      _textController.text;
+                                                  if (text.isNotEmpty) {
+                                                    var intVal =
+                                                        int.tryParse(text) ??
+                                                            -1;
+                                                    print("INTVAL $intVal");
+
+                                                    if (0 <= intVal &&
+                                                        intVal <= 18) {
+                                                      text = intVal.toString();
+                                                    } else {
+                                                      text = "";
+                                                    }
+                                                  }
+                                                  print("TEXT $text");
+                                                  if (text.isNotEmpty) {
+                                                    _textController.clear();
+                                                    _feedbackGiven = true;
+                                                  } else {
+                                                    _validInputSum = false;
+                                                  }
+                                                });
+                                              },
+                                              child: Text(
+                                                "SUBMIT",
+                                                style: GoogleFonts.vt323(
+                                                  textStyle: TextStyle(
+                                                    letterSpacing: .5,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 )
                               : Center(
+                                  // TODO here add reset button
                                   child: Text(
-                                    "Thanks for the feedback!",
+                                    "Thanks for the feedback!\n\nYour response "
+                                    "will be used to re-train and improve the "
+                                    "system.",
                                     style: GoogleFonts.vt323(
                                       textStyle: TextStyle(
                                         letterSpacing: .5,
