@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _feedbackGiven = false;
     _validInputSum = true;
     _negativeFeedbackGiven = false;
+    _textController.clear();
   }
 
   bool _bothDigitsFilled() => digit1.isNotEmpty && digit2.isNotEmpty;
