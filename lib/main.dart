@@ -76,6 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _sumCalculated() => sum.isNotEmpty;
 
+  bool _feedbackGiven() => false;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -219,11 +221,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             : Container(),
                       ),
                       const SizedBox(width: 20),
-                      Visibility(
-                        visible: _sumCalculated(),
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
+                      AnimatedOpacity(
+                        opacity: _sumCalculated() ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 100),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -231,7 +231,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               "How did the system do?",
                               style: GoogleFonts.vt323(
                                 textStyle: TextStyle(
-                                  // color: Colors.blue,
                                   letterSpacing: .5,
                                   fontSize: 20,
                                 ),
@@ -342,8 +341,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )
           : TicTacToeMain(),
-      floatingActionButton: FloatingActionButton(
-        child: FaIcon(FontAwesomeIcons.sync),
+      floatingActionButton: FloatingActionButton.extended(
+        label: sumOrTtt == 0
+            ? Text("Switch to Tic-Tac-Toe")
+            : Text("Switch to Sum"),
+        icon: sumOrTtt == 0
+            ? FaIcon(FontAwesomeIcons.borderAll)
+            : FaIcon(FontAwesomeIcons.plus),
         onPressed: () => setState(() => sumOrTtt = (sumOrTtt + 1) % 2),
       ),
     );
