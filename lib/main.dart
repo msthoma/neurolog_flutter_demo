@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -307,6 +308,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Column(
                         children: [
                           Container(
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 width: 2.0,
@@ -317,9 +319,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: canvasSize,
                             child: sum.isNotEmpty
                                 ? Center(
-                                    child: Text(
+                                    child: AutoSizeText(
                                       sum,
-                                      style: TextStyle(fontSize: 100),
+                                      style: TextStyle(fontSize: 250),
                                     ),
                                   )
                                 : Container(),
