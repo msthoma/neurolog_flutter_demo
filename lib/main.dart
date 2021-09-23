@@ -124,10 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 children: [
                   // empty space on the left
-                  Expanded(
-                    flex: 1,
-                    child: Container(),
-                  ),
+                  Expanded(flex: 1, child: Container()),
                   // main column
                   Expanded(
                     flex: 8,
@@ -135,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Spacer(),
+                        // title and instructions
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           // crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +179,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: 10,
                               decoration: BoxDecoration(color: Colors.blue),
                             ),
-                            // Spacer(),
                             // Instructions
                             Container(
                               height: instructionsBoxHeight,
@@ -201,120 +198,146 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         Spacer(),
+                        // digit boxes
                         Row(
                           children: [
                             Spacer(),
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 2.0, color: Colors.blue),
-                              ),
-                              child: Builder(
-                                builder: (BuildContext context) {
-                                  return GestureDetector(
-                                    onPanUpdate: (details) {
-                                      setState(
-                                        () {
-                                          RenderBox renderBox = context
-                                              .findRenderObject() as RenderBox;
-                                          digit1.add(renderBox.globalToLocal(
-                                              details.globalPosition));
+                            // first digit box
+                            Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 2.0, color: Colors.blue),
+                                  ),
+                                  child: Builder(
+                                    builder: (BuildContext context) {
+                                      return GestureDetector(
+                                        onPanUpdate: (details) {
+                                          setState(
+                                            () {
+                                              RenderBox renderBox =
+                                                  context.findRenderObject()
+                                                      as RenderBox;
+                                              digit1.add(
+                                                  renderBox.globalToLocal(
+                                                      details.globalPosition));
+                                            },
+                                          );
                                         },
+                                        onPanStart: (details) {
+                                          setState(
+                                            () {
+                                              RenderBox renderBox =
+                                                  context.findRenderObject()
+                                                      as RenderBox;
+                                              digit1.add(
+                                                  renderBox.globalToLocal(
+                                                      details.globalPosition));
+                                            },
+                                          );
+                                        },
+                                        // mark end with Offset.zero
+                                        onPanEnd: (details) =>
+                                            digit1.add(Offset.zero),
+                                        child: ClipRect(
+                                          child: CustomPaint(
+                                            size: Size(canvasSize, canvasSize),
+                                            painter: DrawingPainter(
+                                                offsetPoints: digit1),
+                                          ),
+                                        ),
                                       );
                                     },
-                                    onPanStart: (details) {
-                                      setState(
-                                        () {
-                                          RenderBox renderBox = context
-                                              .findRenderObject() as RenderBox;
-                                          digit1.add(renderBox.globalToLocal(
-                                              details.globalPosition));
-                                        },
-                                      );
-                                    },
-                                    // mark end with Offset.zero
-                                    onPanEnd: (details) =>
-                                        digit1.add(Offset.zero),
-                                    child: ClipRect(
-                                      child: CustomPaint(
-                                        size: Size(canvasSize, canvasSize),
-                                        painter: DrawingPainter(
-                                            offsetPoints: digit1),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                                Text("Write first digit here...")
+                              ],
                             ),
                             Spacer(),
+                            // plus
                             FaIcon(FontAwesomeIcons.plus,
                                 size: plusEqualsSymbolsSize),
                             Spacer(),
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 2.0, color: Colors.blue),
-                              ),
-                              child: Builder(
-                                builder: (BuildContext context) {
-                                  return GestureDetector(
-                                    onPanUpdate: (details) {
-                                      setState(
-                                        () {
-                                          RenderBox renderBox = context
-                                              .findRenderObject() as RenderBox;
-                                          digit2.add(renderBox.globalToLocal(
-                                              details.globalPosition));
+                            // second digit box
+                            Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(width: 2.0, color: Colors.blue),
+                                  ),
+                                  child: Builder(
+                                    builder: (BuildContext context) {
+                                      return GestureDetector(
+                                        onPanUpdate: (details) {
+                                          setState(
+                                            () {
+                                              RenderBox renderBox = context
+                                                  .findRenderObject() as RenderBox;
+                                              digit2.add(renderBox.globalToLocal(
+                                                  details.globalPosition));
+                                            },
+                                          );
                                         },
+                                        onPanStart: (details) {
+                                          setState(() {
+                                            RenderBox renderBox = context
+                                                .findRenderObject() as RenderBox;
+                                            digit2.add(renderBox.globalToLocal(
+                                                details.globalPosition));
+                                          });
+                                        },
+                                        onPanEnd: (details) =>
+                                            digit2.add(Offset.zero),
+                                        child: ClipRect(
+                                          child: CustomPaint(
+                                            size: Size(canvasSize, canvasSize),
+                                            painter: DrawingPainter(
+                                                offsetPoints: digit2),
+                                          ),
+                                        ),
                                       );
                                     },
-                                    onPanStart: (details) {
-                                      setState(() {
-                                        RenderBox renderBox = context
-                                            .findRenderObject() as RenderBox;
-                                        digit2.add(renderBox.globalToLocal(
-                                            details.globalPosition));
-                                      });
-                                    },
-                                    onPanEnd: (details) =>
-                                        digit2.add(Offset.zero),
-                                    child: ClipRect(
-                                      child: CustomPaint(
-                                        size: Size(canvasSize, canvasSize),
-                                        painter: DrawingPainter(
-                                            offsetPoints: digit2),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                                Text("...and second digit here.")
+                              ],
                             ),
                             Spacer(),
+                            // equals
                             FaIcon(FontAwesomeIcons.equals,
                                 size: plusEqualsSymbolsSize),
                             Spacer(),
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 2.0, color: Colors.blue),
-                              ),
-                              width: canvasSize,
-                              height: canvasSize,
-                              child: sum.isNotEmpty
-                                  ? Center(
-                                      child: Text(
-                                        sum,
-                                        style: GoogleFonts.vt323(
-                                          textStyle: TextStyle(
-                                            letterSpacing: .5,
-                                            fontSize: 100,
+                            // sum box
+                            Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(width: 2.0, color: Colors.blue),
+                                  ),
+                                  width: canvasSize,
+                                  height: canvasSize,
+                                  child: sum.isNotEmpty
+                                      ? Center(
+                                          child: Text(
+                                            sum,
+                                            style: GoogleFonts.vt323(
+                                              textStyle: TextStyle(
+                                                letterSpacing: .5,
+                                                fontSize: 100,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
+                                        )
+                                      : Container(),
+                                ),
+                                Text("Predicted sum.")
+                              ],
                             ),
                             Spacer(),
+                            // feedback box
                             SizedBox(
                               height: canvasSize,
                               width: canvasSize,
@@ -442,7 +465,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               SizedBox(height: 10),
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.end,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   ElevatedButton(
                                                     onPressed: () => setState(
@@ -527,6 +550,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         Spacer(),
+                        // buttons row
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -586,6 +610,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         Spacer(),
+                        // logos at the bottom
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -612,11 +637,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    // empty space on the right
-                    flex: 1,
-                    child: Container(),
-                  ),
+                  // empty space on the right
+                  Expanded(flex: 1, child: Container()),
                 ],
               ),
             )
