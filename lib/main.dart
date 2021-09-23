@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:neurolog_flutter_demo/resources/resources.dart';
 import 'package:neurolog_flutter_demo/tic_tac_toe.dart';
@@ -71,6 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
     sum = "";
   }
 
+  bool _bothDigitsFilled() => digit1.isNotEmpty && digit2.isNotEmpty;
+
+  bool _sumCalculated() => sum.isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -83,17 +88,36 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Spacer(),
                   // Image(image: AssetImage(Images.brainNetwork), height: 100),
+                  // Text(
+                  //   'NeuroLog',
+                  //   style: TextStyle(
+                  //     fontFeatures: [FontFeature.enable('smcp')],
+                  //     color: Colors.blue,
+                  //     fontSize: 60,
+                  //     letterSpacing: .5,
+                  //   ),
+                  // ),
                   Text(
                     'NeuroLog',
-                    style: TextStyle(
-                      fontFeatures: [FontFeature.enable('smcp')],
-                      color: Colors.blue,
-                      fontSize: 60,
-                      letterSpacing: .5,
+                    style: GoogleFonts.vt323(
+                      textStyle: TextStyle(
+                        color: Colors.blue,
+                        fontFeatures: [FontFeature.enable('smcp')],
+                        letterSpacing: .5,
+                        fontSize: 80,
+                      ),
                     ),
                   ),
-                  Text('A Neural-Symbolic System',
-                      style: TextStyle(fontSize: 30)),
+                  Text(
+                    "A Neural-Symbolic System",
+                    style: GoogleFonts.vt323(
+                      textStyle: TextStyle(
+                        // color: Colors.blue,
+                        letterSpacing: .5,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
                   Spacer(),
                   Row(
                     children: [
@@ -194,6 +218,47 @@ class _MyHomePageState extends State<MyHomePage> {
                               )
                             : Container(),
                       ),
+                      const SizedBox(width: 20),
+                      Visibility(
+                        visible: _sumCalculated(),
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "How did the system do?",
+                              style: GoogleFonts.vt323(
+                                textStyle: TextStyle(
+                                  // color: Colors.blue,
+                                  letterSpacing: .5,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.check,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: _sumCalculated() ? () {} : null,
+                                ),
+                                const SizedBox(height: 20),
+                                IconButton(
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.times,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: _sumCalculated() ? () {} : null,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       Spacer(),
                     ],
                   ),
@@ -202,27 +267,55 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                        label: Text("Reset"),
+                        label: Text(
+                          "RESET",
+                          style: GoogleFonts.vt323(
+                            textStyle: TextStyle(
+                              // color: Colors.blue,
+                              letterSpacing: .5,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
                         icon: FaIcon(FontAwesomeIcons.redo),
                         onPressed: () => setState(() => _resetDigits()),
                       ),
                       const SizedBox(width: 30),
-                      ElevatedButton.icon(
-                        label: Text("Calculate"),
-                        icon: FaIcon(FontAwesomeIcons.brain),
-                        onPressed: () async {
-                          if (digit1.isNotEmpty && digit2.isNotEmpty) {
-                            var res = await Future.wait([digit1, digit2]
-                                    .map((points) => convertToImg(points)))
-                                .then((imgs) => callNl(imgs));
-                            if (res.statusCode == 200) {
-                              setState(() => sum = (res.data['digit1.png'] +
-                                      res.data['digit2.png'])
-                                  .toString());
-                              print(res.data);
-                            }
-                          }
-                        },
+                      Tooltip(
+                        message: _bothDigitsFilled()
+                            ? "Calculate answer!"
+                            : "Please write numbers first!",
+                        child: ElevatedButton.icon(
+                          label: Text(
+                            "CALCULATE",
+                            style: GoogleFonts.vt323(
+                              textStyle: TextStyle(
+                                // color: Colors.blue,
+                                letterSpacing: .5,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                          icon: FaIcon(FontAwesomeIcons.brain),
+                          onPressed: _bothDigitsFilled()
+                              ? () async {
+                                  if (digit1.isNotEmpty && digit2.isNotEmpty) {
+                                    var res = await Future.wait([
+                                      digit1,
+                                      digit2
+                                    ].map((points) => convertToImg(points)))
+                                        .then((imgs) => callNl(imgs));
+                                    if (res.statusCode == 200) {
+                                      setState(() => sum =
+                                          (res.data['digit1.png'] +
+                                                  res.data['digit2.png'])
+                                              .toString());
+                                      print(res.data);
+                                    }
+                                  }
+                                }
+                              : null, // this disables button when digits empty
+                        ),
                       ),
                     ],
                   ),
@@ -258,13 +351,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 Future<Response> callNl(List<Uint8List> imgs) async {
-  // print(Uri.http("0.0.0.0:8000", "/process"));
-  //
-  // var res = await http.get(Uri.http("0.0.0.0:8000", "/process"));
-  // print(res.statusCode);
-  // print(jsonDecode(res.body));
-  // print(res.body);
-
   var dio = Dio(
     BaseOptions(
       // baseUrl: 'http://0.0.0.0:8000/',
@@ -273,24 +359,26 @@ Future<Response> callNl(List<Uint8List> imgs) async {
     ),
   );
   var formData = FormData();
-  formData.files.addAll([
-    MapEntry(
-      'files',
-      MultipartFile.fromBytes(
-        imgs[0],
-        filename: "digit1.png",
-        contentType: MediaType("image", "png"),
+  formData.files.addAll(
+    [
+      MapEntry(
+        'files',
+        MultipartFile.fromBytes(
+          imgs[0],
+          filename: "digit1.png",
+          contentType: MediaType("image", "png"),
+        ),
       ),
-    ),
-    MapEntry(
-      'files',
-      MultipartFile.fromBytes(
-        imgs[1],
-        filename: "digit2.png",
-        contentType: MediaType("image", "png"),
+      MapEntry(
+        'files',
+        MultipartFile.fromBytes(
+          imgs[1],
+          filename: "digit2.png",
+          contentType: MediaType("image", "png"),
+        ),
       ),
-    ),
-  ]);
+    ],
+  );
   return await dio.post("/deduce", data: formData);
 }
 
@@ -317,23 +405,4 @@ Future<Uint8List> convertToImg(List<Offset> points) async {
   final imgBytes = await img.toByteData(format: ImageByteFormat.png);
   Uint8List pngUint8List = imgBytes!.buffer.asUint8List();
   return pngUint8List;
-
-  // // String to uri
-  // Uri uri = Uri.parse('http://0.0.0.0:8000/deduce');
-  //
-  // // create multipart request
-  // http.MultipartRequest request = http.MultipartRequest("POST", uri);
-  //
-  // http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
-  //   'img',
-  //   pngUint8List,
-  //   filename: '${DateTime.now().millisecondsSinceEpoch}.jpg',
-  //   contentType: MediaType("image", "jpg"),
-  // );
-  //
-  // request.fields['FieldName'] = "img";
-  // request.files.add(multipartFile);
-  //
-  // var response = await request.send();
-  // print(response.statusCode);
 }
