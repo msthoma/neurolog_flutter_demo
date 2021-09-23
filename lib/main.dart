@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:neurolog_flutter_demo/resources/resources.dart';
-import 'package:neurolog_flutter_demo/tic_tac_toe.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const String _instructions = """
 # Instructions
@@ -598,18 +598,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       InkWell(
                           child: Image(
                               image: AssetImage(Images.oucLogo), height: 60),
-                          onTap: () => print("tap")),
+                          onTap: () => launchURL('https://www.ouc.ac.cy')),
                       InkWell(
                         child: Image(
                             image: AssetImage(Images.cclabLogo), height: 60),
-                        onTap: () {},
+                        onTap: () =>
+                            launchURL('https://cognition.ouc.ac.cy/cclab/'),
                       ),
-                      Image(
-                          image: AssetImage(Images.mariSenseLogo), height: 60),
+                      InkWell(
+                        child: Image(
+                          image: AssetImage(Images.mariSenseLogo),
+                          height: 60,
+                        ),
+                        onTap: () =>
+                            launchURL('https://www.marisenseproject.net/'),
+                      ),
                       SizedBox(width: 30),
-                      FaIcon(FontAwesomeIcons.github, size: 25),
-                      // TODO add url links when clicking images
-                      //  TODO add link to github repo, build with Flutter
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.github, size: 25),
+                        onPressed: () => launchURL(
+                            'https://github.com/msthoma/neurolog_flutter_demo'),
+                      ),
                     ],
                   ),
                 ],
@@ -688,4 +697,12 @@ Future<Uint8List> convertToImg(List<Offset> points, double canvasSize) async {
   final imgBytes = await img.toByteData(format: ImageByteFormat.png);
   Uint8List pngUint8List = imgBytes!.buffer.asUint8List();
   return pngUint8List;
+}
+
+void launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    print('Could not launch $url');
+  }
 }
