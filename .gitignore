@@ -2,7 +2,7 @@ ios/
 android/
 # Miscellaneous
 *.class
-*.lock
+#*.lock
 *.log
 *.pyc
 *.swp
