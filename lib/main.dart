@@ -1,8 +1,8 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -31,7 +31,7 @@ final Paint drawingPaint = Paint()
   ..color = Colors.black
   ..strokeWidth = 18.0;
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class DrawingPainter extends CustomPainter {
   List<Offset> offsetPoints;
@@ -53,6 +53,8 @@ class DrawingPainter extends CustomPainter {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,19 +64,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: GoogleFonts.vt323TextTheme(Theme.of(context).textTheme),
       ),
-      home: MyHomePage(title: 'NeuroLog'),
-      // home: MyHomePage(),
+      home: const MyHomePage(title: 'NeuroLog'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -113,13 +114,14 @@ class _MyHomePageState extends State<MyHomePage> {
     var size = MediaQuery.of(context).size;
     var mainColumnWidth = size.width * (8 / 10);
     var instructionsBoxHeight = size.height * (1 / 3.5);
-    print(mainColumnWidth / 7);
-    print(size.height / 4);
+    if (kDebugMode) {
+      print(mainColumnWidth / 7);
+      print(size.height / 4);
+    }
     var canvasSize = mainColumnWidth / 6;
     var plusEqualsSymbolsSize = mainColumnWidth / 12;
 
     return Scaffold(
-      // appBar: AppBar(title: Text(widget.title)),
       body: Center(
         child: Row(
           children: [
@@ -131,20 +133,20 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   // title and instructions
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       // column with title
                       Column(
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
-                            children: [
+                            children: const [
                               Image(
                                 image: AssetImage(Images.aiBrain),
                                 height: 60,
@@ -161,21 +163,21 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ],
                           ),
-                          Text(
+                          const Text(
                             "A Neural-Symbolic System",
                             style: TextStyle(fontSize: 30),
                           ),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         // vertical divider between title & instructions
                         height: instructionsBoxHeight * 0.9,
                         width: 10,
-                        decoration: BoxDecoration(color: Colors.blue),
+                        decoration: const BoxDecoration(color: Colors.blue),
                       ),
                       // Instructions
-                      Container(
+                      SizedBox(
                         height: instructionsBoxHeight,
                         width: mainColumnWidth * (2 / 3),
                         // decoration: BoxDecoration(
@@ -187,18 +189,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           styleSheet: MarkdownStyleSheet.fromTheme(
                             Theme.of(context),
                           ).copyWith(
-                            p: TextStyle(fontSize: 20),
+                            p: const TextStyle(fontSize: 20),
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   // digit boxes
                   Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       // first digit box
                       Column(
                         children: [
@@ -246,21 +248,25 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             ),
                           ),
-                          Text("Write first digit here...")
+                          const Text("Write first digit here...")
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       // plus
-                      FaIcon(FontAwesomeIcons.plus,
-                          size: plusEqualsSymbolsSize),
-                      Spacer(),
+                      FaIcon(
+                        FontAwesomeIcons.plus,
+                        size: plusEqualsSymbolsSize,
+                      ),
+                      const Spacer(),
                       // second digit box
                       Column(
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 2.0, color: Colors.blue),
+                              border: Border.all(
+                                width: 2.0,
+                                color: Colors.blue,
+                              ),
                             ),
                             child: Builder(
                               builder: (BuildContext context) {
@@ -296,14 +302,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             ),
                           ),
-                          Text("...and second digit here...")
+                          const Text("...and second digit here...")
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       // equals
                       FaIcon(FontAwesomeIcons.equals,
                           size: plusEqualsSymbolsSize),
-                      Spacer(),
+                      const Spacer(),
                       // sum box
                       Column(
                         children: [
@@ -321,15 +327,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ? Center(
                                     child: AutoSizeText(
                                       sum,
-                                      style: TextStyle(fontSize: 250),
+                                      style: const TextStyle(fontSize: 250),
                                     ),
                                   )
                                 : Container(),
                           ),
-                          Text("...the system will predict their sum.")
+                          const Text("...the system will predict their sum.")
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       // feedback box
                       SizedBox(
                         height: canvasSize,
@@ -353,7 +359,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   firstChild: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "How did the system do?",
                                         style: TextStyle(fontSize: 20),
                                       ),
@@ -362,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             MainAxisAlignment.center,
                                         children: [
                                           IconButton(
-                                            icon: FaIcon(
+                                            icon: const FaIcon(
                                               FontAwesomeIcons.check,
                                               color: Colors.green,
                                             ),
@@ -375,8 +381,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                           const SizedBox(height: 20),
                                           IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.times,
+                                            icon: const FaIcon(
+                                              FontAwesomeIcons.xmark,
                                               color: Colors.red,
                                             ),
                                             onPressed: _sumCalculated()
@@ -400,12 +406,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           "Help the system learn by providing "
                                           "the correct answer!",
                                           style: TextStyle(fontSize: 20),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         TextField(
                                           controller: _textController,
                                           keyboardType: TextInputType.number,
@@ -419,14 +425,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                             errorText: !_validInputSum
                                                 ? "Must be a value between 0-18!"
                                                 : null,
-                                            border: OutlineInputBorder(),
+                                            border: const OutlineInputBorder(),
                                             helperStyle:
-                                                TextStyle(fontSize: 12),
-                                            errorStyle: TextStyle(fontSize: 12),
+                                                const TextStyle(fontSize: 12),
+                                            errorStyle:
+                                                const TextStyle(fontSize: 12),
                                           ),
-                                          style: TextStyle(fontSize: 20),
+                                          style: const TextStyle(fontSize: 20),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -434,12 +441,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ElevatedButton(
                                               onPressed: () =>
                                                   setState(() => _resetAll()),
-                                              child: Text(
+                                              child: const Text(
                                                 "CANCEL & RETRY",
                                                 style: TextStyle(fontSize: 15),
                                               ),
                                             ),
-                                            SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                             ElevatedButton(
                                               onPressed: () {
                                                 setState(() {
@@ -467,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   }
                                                 });
                                               },
-                                              child: Text(
+                                              child: const Text(
                                                 "SUBMIT",
                                                 style: TextStyle(fontSize: 15),
                                               ),
@@ -478,7 +485,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 )
-                              : Center(
+                              : const Center(
                                   // TODO here add reset button
                                   child: Text(
                                     "Thanks for the feedback!\n\nYour response "
@@ -489,17 +496,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   // buttons row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                        label: Text("RESET", style: TextStyle(fontSize: 25)),
-                        icon: FaIcon(FontAwesomeIcons.redo),
+                        label:
+                            const Text("RESET", style: TextStyle(fontSize: 25)),
+                        icon: const FaIcon(FontAwesomeIcons.arrowRotateRight),
                         onPressed: () => setState(() => _resetAll()),
                       ),
                       const SizedBox(width: 30),
@@ -508,9 +516,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? "Calculate answer!"
                             : "Please write numbers first!",
                         child: ElevatedButton.icon(
-                          label:
-                              Text("CALCULATE", style: TextStyle(fontSize: 25)),
-                          icon: FaIcon(FontAwesomeIcons.brain),
+                          label: const Text("CALCULATE",
+                              style: TextStyle(fontSize: 25)),
+                          icon: const FaIcon(FontAwesomeIcons.brain),
                           onPressed: _bothDigitsFilled()
                               ? () async {
                                   if (digit1.isNotEmpty && digit2.isNotEmpty) {
@@ -525,7 +533,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                           (res.data['digit1.png'] +
                                                   res.data['digit2.png'])
                                               .toString());
-                                      print(res.data);
+                                      if (kDebugMode) {
+                                        print(res.data);
+                                      }
                                     }
                                   }
                                 }
@@ -534,32 +544,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   // logos at the bottom
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                          child: Image(
+                          child: const Image(
                               image: AssetImage(Images.oucLogo), height: 60),
                           onTap: () => launchURL('https://www.ouc.ac.cy')),
                       InkWell(
-                        child: Image(
+                        child: const Image(
                             image: AssetImage(Images.cclabLogo), height: 60),
                         onTap: () =>
                             launchURL('https://cognition.ouc.ac.cy/cclab/'),
                       ),
                       InkWell(
-                        child: Image(
+                        child: const Image(
                           image: AssetImage(Images.mariSenseLogo),
                           height: 60,
                         ),
                         onTap: () =>
                             launchURL('https://www.marisenseproject.net/'),
                       ),
-                      SizedBox(width: 30),
+                      const SizedBox(width: 30),
                       IconButton(
-                        icon: FaIcon(FontAwesomeIcons.github, size: 25),
+                        icon: const FaIcon(FontAwesomeIcons.github, size: 25),
                         onPressed: () => launchURL(
                             'https://github.com/msthoma/neurolog_flutter_demo'),
                       ),
@@ -622,7 +632,7 @@ Future<Uint8List> convertToImg(List<Offset> points, double canvasSize) async {
   final recorder = PictureRecorder();
   final canvas = Canvas(
     recorder,
-    Rect.fromPoints(Offset(0.0, 0.0), Offset(canvasSize, canvasSize)),
+    Rect.fromPoints(const Offset(0.0, 0.0), Offset(canvasSize, canvasSize)),
   );
 
   canvas.drawRect(
@@ -643,10 +653,13 @@ Future<Uint8List> convertToImg(List<Offset> points, double canvasSize) async {
   return pngUint8List;
 }
 
-void launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
+void launchURL(String urlStr) async {
+  final url = Uri.parse(urlStr);
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
   } else {
-    print('Could not launch $url');
+    if (kDebugMode) {
+      print('Could not launch $urlStr');
+    }
   }
 }
