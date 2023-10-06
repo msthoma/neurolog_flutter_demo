@@ -141,12 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       const Spacer(),
                       // column with title
-                      Column(
+                      const Column(
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Row(
-                            children: const [
+                            children: [
                               Image(
                                 image: AssetImage(Images.aiBrain),
                                 height: 60,
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ],
                           ),
-                          const Text(
+                          Text(
                             "A Neural-Symbolic System",
                             style: TextStyle(fontSize: 30),
                           ),
