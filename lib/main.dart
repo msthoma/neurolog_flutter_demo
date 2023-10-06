@@ -658,7 +658,11 @@ Future<Response> callNl(List<Uint8List> imgs) async {
       ),
     ],
   );
-  return await dio.post("/deduce", data: formData);
+  return await dio.post(
+    "/deduce_vit",
+    // "/deduce",
+    data: formData,
+  );
 }
 
 Future<Uint8List> convertToImg(List<Offset> points, double canvasSize) async {
