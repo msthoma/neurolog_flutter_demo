@@ -219,8 +219,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       () {
                                         RenderBox renderBox = context
                                             .findRenderObject() as RenderBox;
-                                        digit1.add(renderBox.globalToLocal(
-                                            details.globalPosition));
+                                        digit1.add(
+                                          renderBox.globalToLocal(
+                                            details.globalPosition,
+                                          ),
+                                        );
                                       },
                                     );
                                   },
@@ -229,8 +232,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       () {
                                         RenderBox renderBox = context
                                             .findRenderObject() as RenderBox;
-                                        digit1.add(renderBox.globalToLocal(
-                                            details.globalPosition));
+                                        digit1.add(
+                                          renderBox.globalToLocal(
+                                            details.globalPosition,
+                                          ),
+                                        );
                                       },
                                     );
                                   },
@@ -240,15 +246,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: ClipRect(
                                     child: CustomPaint(
                                       size: Size(canvasSize, canvasSize),
-                                      painter:
-                                          DrawingPainter(offsetPoints: digit1),
+                                      painter: DrawingPainter(
+                                        offsetPoints: digit1,
+                                      ),
                                     ),
                                   ),
                                 );
                               },
                             ),
                           ),
-                          const Text("Write first digit here...")
+                          const Text("Write first digit here..."),
                         ],
                       ),
                       const Spacer(),
@@ -276,26 +283,35 @@ class _MyHomePageState extends State<MyHomePage> {
                                       () {
                                         RenderBox renderBox = context
                                             .findRenderObject() as RenderBox;
-                                        digit2.add(renderBox.globalToLocal(
-                                            details.globalPosition));
+                                        digit2.add(
+                                          renderBox.globalToLocal(
+                                            details.globalPosition,
+                                          ),
+                                        );
                                       },
                                     );
                                   },
                                   onPanStart: (details) {
-                                    setState(() {
-                                      RenderBox renderBox = context
-                                          .findRenderObject() as RenderBox;
-                                      digit2.add(renderBox.globalToLocal(
-                                          details.globalPosition));
-                                    });
+                                    setState(
+                                      () {
+                                        RenderBox renderBox = context
+                                            .findRenderObject() as RenderBox;
+                                        digit2.add(
+                                          renderBox.globalToLocal(
+                                            details.globalPosition,
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   onPanEnd: (details) =>
                                       digit2.add(Offset.zero),
                                   child: ClipRect(
                                     child: CustomPaint(
                                       size: Size(canvasSize, canvasSize),
-                                      painter:
-                                          DrawingPainter(offsetPoints: digit2),
+                                      painter: DrawingPainter(
+                                        offsetPoints: digit2,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -307,8 +323,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       const Spacer(),
                       // equals
-                      FaIcon(FontAwesomeIcons.equals,
-                          size: plusEqualsSymbolsSize),
+                      FaIcon(
+                        FontAwesomeIcons.equals,
+                        size: plusEqualsSymbolsSize,
+                      ),
                       const Spacer(),
                       // sum box
                       Column(
@@ -332,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   )
                                 : Container(),
                           ),
-                          const Text("...the system will predict their sum.")
+                          const Text("...the system will predict their sum."),
                         ],
                       ),
                       const Spacer(),
@@ -374,8 +392,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
                                             onPressed: _sumCalculated()
                                                 ? () {
-                                                    setState(() =>
-                                                        _feedbackGiven = true);
+                                                    setState(
+                                                      () =>
+                                                          _feedbackGiven = true,
+                                                    );
                                                   }
                                                 : null,
                                           ),
@@ -386,12 +406,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                               color: Colors.red,
                                             ),
                                             onPressed: _sumCalculated()
-                                                ? () {
-                                                    setState(() {
-                                                      _negativeFeedbackGiven =
-                                                          true;
-                                                    });
-                                                  }
+                                                ? () => setState(
+                                                      () =>
+                                                          _negativeFeedbackGiven =
+                                                              true,
+                                                    )
                                                 : null,
                                           ),
                                         ],
@@ -417,7 +436,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           keyboardType: TextInputType.number,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9]')),
+                                              RegExp(r'[0-9]'),
+                                            ),
                                           ],
                                           decoration: InputDecoration(
                                             helperText:
@@ -439,8 +459,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () =>
-                                                  setState(() => _resetAll()),
+                                              onPressed: () => setState(
+                                                () => _resetAll(),
+                                              ),
                                               child: const Text(
                                                 "CANCEL & RETRY",
                                                 style: TextStyle(fontSize: 15),
@@ -505,8 +526,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                        label:
-                            const Text("RESET", style: TextStyle(fontSize: 25)),
+                        label: const Text(
+                          "RESET",
+                          style: TextStyle(fontSize: 25),
+                        ),
                         icon: const FaIcon(FontAwesomeIcons.arrowRotateRight),
                         onPressed: () => setState(() => _resetAll()),
                       ),
@@ -516,23 +539,28 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? "Calculate answer!"
                             : "Please write numbers first!",
                         child: ElevatedButton.icon(
-                          label: const Text("CALCULATE",
-                              style: TextStyle(fontSize: 25)),
+                          label: const Text(
+                            "CALCULATE",
+                            style: TextStyle(fontSize: 25),
+                          ),
                           icon: const FaIcon(FontAwesomeIcons.brain),
                           onPressed: _bothDigitsFilled()
                               ? () async {
                                   if (digit1.isNotEmpty && digit2.isNotEmpty) {
-                                    var res = await Future.wait([
-                                      digit1,
-                                      digit2
-                                    ].map((points) =>
-                                            convertToImg(points, canvasSize)))
-                                        .then((imgs) => callNl(imgs));
+                                    var res = await Future.wait(
+                                      [digit1, digit2].map(
+                                        (points) =>
+                                            convertToImg(points, canvasSize),
+                                      ),
+                                    ).then(
+                                      (imgs) => callNl(imgs),
+                                    );
                                     if (res.statusCode == 200) {
-                                      setState(() => sum =
-                                          (res.data['digit1.png'] +
-                                                  res.data['digit2.png'])
-                                              .toString());
+                                      setState(
+                                        () => sum = (res.data['digit1.png'] +
+                                                res.data['digit2.png'])
+                                            .toString(),
+                                      );
                                       if (kDebugMode) {
                                         print(res.data);
                                       }
@@ -550,12 +578,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                          child: const Image(
-                              image: AssetImage(Images.oucLogo), height: 60),
-                          onTap: () => launchURL('https://www.ouc.ac.cy')),
+                        child: const Image(
+                          image: AssetImage(Images.oucLogo),
+                          height: 60,
+                        ),
+                        onTap: () => launchURL('https://www.ouc.ac.cy'),
+                      ),
                       InkWell(
                         child: const Image(
-                            image: AssetImage(Images.cclabLogo), height: 60),
+                          image: AssetImage(Images.cclabLogo),
+                          height: 60,
+                        ),
                         onTap: () =>
                             launchURL('https://cognition.ouc.ac.cy/cclab/'),
                       ),
